@@ -1,0 +1,5 @@
+#Dependencies
+node_modules
+
+#Package version file
+package-lock.json
