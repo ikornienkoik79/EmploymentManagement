@@ -1,17 +1,17 @@
 import { Router } from '@angular/router';
-import { ApiService } from './../../service/api.service';
+import { ApiService } from '../../services/api.service';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 
 @Component({
   selector: 'app-employee-create',
   templateUrl: './employee-create.component.html',
-  styleUrls: ['./employee-create.component.css']
+  styleUrls: ['./employee-create.component.scss']
 })
 
 export class EmployeeCreateComponent implements OnInit {
   submitted = false;
-  employeeForm: FormGroup;
+  employeeForm: any;
   EmployeeProfile:any = ['Finance', 'BDM', 'HR', 'Sales', 'Admin']
 
   constructor(
@@ -35,20 +35,20 @@ export class EmployeeCreateComponent implements OnInit {
   }
 
   // Choose designation with select dropdown
-  updateProfile(e){
-    this.employeeForm.get('designation').setValue(e, {
+  updateProfile(e: any){
+    this.employeeForm?.get('designation')?.setValue(e.target.value, {
       onlySelf: true
     })
   }
 
   // Getter to access form control
   get myForm(){
-    return this.employeeForm.controls;
+    return this.employeeForm?.controls;
   }
 
-  onSubmit() {
+  onSubmit(): Boolean | void {
     this.submitted = true;
-    if (!this.employeeForm.valid) {
+    if (!this.employeeForm?.valid) {
       return false;
     } else {
       this.apiService.createEmployee(this.employeeForm.value).subscribe(

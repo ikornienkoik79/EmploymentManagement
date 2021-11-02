@@ -1,21 +1,21 @@
-import { Employee } from './../../model/Employee';
+import { Employee } from '../../models/employee';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { ApiService } from './../../service/api.service';
+import { ApiService } from '../../services/api.service';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 
 
 @Component({
   selector: 'app-employee-edit',
   templateUrl: './employee-edit.component.html',
-  styleUrls: ['./employee-edit.component.css']
+  styleUrls: ['./employee-edit.component.scss']
 })
 
 export class EmployeeEditComponent implements OnInit {
   submitted = false;
-  editForm: FormGroup;
-  employeeData: Employee[];
+  employeeData: Employee[] | undefined;
   EmployeeProfile: any = ['Finance', 'BDM', 'HR', 'Sales', 'Admin']
+  editForm: any;
 
   constructor(
     public fb: FormBuilder,
@@ -37,20 +37,20 @@ export class EmployeeEditComponent implements OnInit {
   }
 
   // Choose options with select-dropdown
-  updateProfile(e) {
-    this.editForm.get('designation').setValue(e, {
+  updateProfile(e: any) {
+    this.editForm?.get('designation')?.setValue(e.target.value, {
       onlySelf: true
     })
   }
 
   // Getter to access form control
   get myForm() {
-    return this.editForm.controls;
+    return this.editForm?.controls;
   }
 
-  getEmployee(id) {
+  getEmployee(id: string | number | null) {
     this.apiService.getEmployee(id).subscribe(data => {
-      this.editForm.setValue({
+      this.editForm?.setValue({
         name: data['name'],
         email: data['email'],
         designation: data['designation'],
@@ -68,16 +68,16 @@ export class EmployeeEditComponent implements OnInit {
     })
   }
 
-  onSubmit() {
+  onSubmit(): Boolean | void {
     this.submitted = true;
-    if (!this.editForm.valid) {
+    if (!this.editForm?.valid) {
       return false;
     } else {
       if (window.confirm('Are you sure?')) {
         let id = this.actRoute.snapshot.paramMap.get('id');
         this.apiService.updateEmployee(id, this.editForm.value)
-          .subscribe(res => {
-            this.router.navigateByUrl('/employees-list');
+          .subscribe(async res => {
+            await this.router.navigateByUrl('/employees-list');
             console.log('Content updated successfully!')
           }, (error) => {
             console.log(error)

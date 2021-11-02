@@ -29,13 +29,13 @@ export class ApiService {
   }
 
   // Get employee
-  getEmployee(id: number): Observable<any> {
+    getEmployee(id: string | number | null): Observable<any> {
     let url = `${this.baseUri}/read/${id}`;
     return this.http.get(url, {headers: this.headers});
   }
 
   // Update employee
-  updateEmployee(id: number, data: any): Observable<any> {
+  updateEmployee(id: string | null, data: any): Observable<any> {
     let url = `${this.baseUri}/update/${id}`;
     return this.http.put(url, data, { headers: this.headers }).pipe(
       catchError(this.errorMgmt)
