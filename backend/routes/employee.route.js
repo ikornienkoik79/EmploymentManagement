@@ -6,6 +6,11 @@ const employeeRoute = express.Router();
 // Employee model
 let Employee = require('../models/Employee');
 
+// Ping pong
+employeeRoute.route('/test').get((req, res, next) => {
+    return 'pong';
+})
+
 // Add Employee
 employeeRoute.route('/create').post((req, res, next) => {
     Employee.create(req.body, (error, data) => {

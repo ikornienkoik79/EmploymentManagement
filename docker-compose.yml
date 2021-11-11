@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  mongo-db:
+    image: mongo
+    ports:
+      - '27017:27017'
+  backend:
+    build: backend
+    image: ikor20211110/meanstack-backend
+    ports:
+      - '4000:4000'
+    links:
+      - mongo-db
+
+  frontend:
+    build: frontend
+    image: ikor20211110/meanstack-frontend
+    ports:
+      - '80:80'
+
